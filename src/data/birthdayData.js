@@ -214,38 +214,6 @@ export const memories = [
 ];
 
 // ─────────────────────────────────────────────────────────────
-// SCENE 5 — A little heart-to-heart. No "correct" answers here,
-// just Anna's honest (and slightly cheeky) reaction to each pick.
-// ─────────────────────────────────────────────────────────────
-
-export const siblingQuiz = [
-  {
-    question: "Who are you to me? ❤️",
-    options: ["My own sister 🥹❤️", "My cousin sister ❤️"],
-    reactions: [
-      "Exactly! 🥹❤️ That's how I see you too — not just as my cousin, but as my own little sister.",
-      "Technically yes... but Anna doesn't accept that answer! 😂❤️ You're my own sister to me.",
-    ],
-  },
-  {
-    question: "Would you adopt me as your own brother? 🥹❤️",
-    options: ["Yes ❤️", "No 😂"],
-    reactions: [
-      "Okay, it's official! 🥹❤️ From today, I'm officially your adopted Anna. No cancellation, no return policy! 😂",
-      "Too late! 😂❤️ I already decided you're my sister, so your approval is just a formality.",
-    ],
-  },
-  {
-    question: "If I ever struggle in life and need your help, will you stand by me? 🥹❤️",
-    options: ["Yes ❤️", "No 😂"],
-    reactions: [
-      "I knew it. 🥹❤️ And remember, I'll always stand by you too — no matter what happens.",
-      "Nice try! 😂❤️ I'm still going to be there for you whenever you need me.",
-    ],
-  },
-];
-
-// ─────────────────────────────────────────────────────────────
 // SCENE 6 — "All About Suji Na" quiz. No right/wrong answers here,
 // just her picking whichever fits — the result screen shows what
 // she chose rather than a score.
@@ -287,12 +255,12 @@ export const butterflyMessages = [
     color: "purple",
     hex: "#a557c9",
     message:
-      "Some relationships are given by family... but some become special because of the bond we create. Ours is one of them. 🥹❤️",
+      "Next IPL season, we have one important mission! 😂🏏\nWe have to watch CSK vs MI together, investigate all the controversial moments, and become full-time cricket detectives! 🕵️‍♂️😂\nAnd most importantly… we need to celebrate properly when CSK wins and MI loses! 💛🦁😂\nCSK-ku support pannitu, MI-ku konjam investigation pannalaam! 🤣🏏\nThis match is definitely going to be one more memory for us! ❤️",
   },
   {
     color: "blue",
     hex: "#6db8f2",
-    message: `I may not have been there from your childhood, but I'm really happy that life gave me a chance to become your ${birthdayData.creatorName}. ❤️`,
+    message: "I may not have been there from your childhood, but I'm really happy that life gave me a chance to become your Anna. ❤️",
   },
   {
     color: "gold",
@@ -303,13 +271,13 @@ export const butterflyMessages = [
   {
     color: "orange",
     hex: "#f2954d",
-    message: `Whenever you need your ${birthdayData.creatorName}, just remember one thing — I'm always there for you. No matter what. 🫶❤️`,
+    message: "Whenever you need your Anna, just remember one thing — I'm always there for you. No matter what. 🫶❤️",
   },
   {
     color: "green",
     hex: "#6dd6a0",
     message:
-      "One day, Keerthi... we're going to recreate that Meiyazhagan scene together. That's one of my little wishes. 🥹❤️",
+      "I can tell you my secrets without being afraid, because I know you'll never leak them—you'll probably forget them yourself! 😂🤫\n\nAnd even if I ask you to remember something or remind me about a task, I already know it'll never happen because you'll forget everything! 😂\n\nSo basically… my secrets are completely safe with you because your memory is the ultimate security system! 😂🤫❤️",
   },
 ];
 

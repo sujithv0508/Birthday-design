@@ -113,19 +113,15 @@ hint, the opening, the "All About Suji Na" quiz, the butterfly messages, the
 final message, etc.) — nothing else needs to be touched. The lock screen's
 hint only ever shows `${creatorName}'s birthday ❤️`, never the code itself.
 
-## 7. Customize the quizzes
+## 7. Customize the quiz
 
-Two separate quizzes live in `src/data/birthdayData.js`:
-
-- **`siblingQuiz`** — "A Little Heart-to-Heart" (`scenes/SiblingQuiz.jsx`), 3
-  questions with no "correct" answer. Each option has its own `reactions`
-  line shown after she picks it. Edit, add, or remove questions/options/
-  reactions freely — the "Chapter X of N" indicator and progress bar are
-  computed from the array length, so they never need manual updates.
-- **`sujiNaQuiz`** — the "All About Suji Na" quiz (`scenes/AboutHerQuiz.jsx`).
-  Also no right/wrong answers — she picks whichever option fits, then goes
-  straight to a "Continue the Surprise" button (no score, no recap screen).
-  It's a plain array of 3 questions, each with 4 options.
+`sujiNaQuiz` in `src/data/birthdayData.js` feeds the "All About Suji Na" quiz
+(`scenes/AboutHerQuiz.jsx`). No right/wrong answers — she picks whichever
+option fits, then goes straight to a "Continue the Surprise" button (no
+score, no recap screen). It's a plain array of 3 questions, each with 4
+options. The "Chapter X of N" indicator and progress bar are computed from
+the scene count, so removing or adding a question never needs manual
+updates elsewhere.
 
 ## 8. Customize the butterfly messages
 
@@ -207,7 +203,6 @@ open as an overlay and close back to where she was:
 | Surprise Opening | `scenes/SurpriseOpening.jsx` |
 | Memory Gallery | `scenes/MemoryGallery.jsx` |
 | Memory Detail | `scenes/MemoryDetail.jsx` — opened from the gallery, closes back to it |
-| Sibling Quiz | `scenes/SiblingQuiz.jsx` |
 | About-Her Quiz ("All About Suji Na") | `scenes/AboutHerQuiz.jsx` |
 | Butterfly Game | `scenes/ButterflyGame.jsx` — catch all six butterflies, each revealing a secret message, ending in a birthday card |
 | Final Wish | `scenes/FinalWish.jsx` |
@@ -249,9 +244,9 @@ public/
   six freely-flying butterflies in any order to send it into the glass jar
   and reveal its own secret message, ending in a cinematic jar-to-heart
   animation and a full birthday letter card.
-- Two quizzes: a no-wrong-answers sibling quiz, and the "All About Suji Na"
-  quiz — also no right/wrong answers, going straight from the last question
-  to a "Continue the Surprise" button with no score or recap screen.
+- The "All About Suji Na" quiz — no right/wrong answers, going straight
+  from the last question to a "Continue the Surprise" button with no score
+  or recap screen.
 - Polaroid photo gallery (all 8 shown at once, no filtering) with a
   full-screen detail view (prev/next/close).
 - Three gifts opened in strict order, each with its own cinematic

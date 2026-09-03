@@ -24,7 +24,7 @@ export default function SecretMessageCard({ hex, message, onKeepGoing }) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ type: "spring", stiffness: 160, damping: 18 }}
-        className="relative w-full max-w-sm rounded-3xl border border-white/20 bg-white/10 p-6 pt-10 text-center shadow-2xl backdrop-blur-xl"
+        className="relative max-h-[85vh] w-full max-w-sm overflow-y-auto rounded-3xl border border-white/20 bg-white/10 p-6 pt-10 text-center shadow-2xl backdrop-blur-xl"
         style={{ boxShadow: `0 0 60px ${hex}44` }}
       >
         <div
@@ -35,7 +35,11 @@ export default function SecretMessageCard({ hex, message, onKeepGoing }) {
         </div>
 
         <p className="font-script text-2xl text-cream">A little secret...</p>
-        <p className="mt-3 text-base leading-relaxed text-cream/90">{message}</p>
+        <div className="mt-3 space-y-2 text-base leading-relaxed text-cream/90">
+          {message.split("\n").map((line, i) =>
+            line ? <p key={i}>{line}</p> : <div key={i} className="h-1" aria-hidden="true" />
+          )}
+        </div>
 
         <motion.button
           type="button"

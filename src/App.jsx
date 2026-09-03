@@ -9,7 +9,6 @@ import SecretLockScreen from "./scenes/SecretLockScreen";
 import Welcome from "./scenes/Welcome";
 import SurpriseOpening from "./scenes/SurpriseOpening";
 import MemoryGallery from "./scenes/MemoryGallery";
-import SiblingQuiz from "./scenes/SiblingQuiz";
 import AboutHerQuiz from "./scenes/AboutHerQuiz";
 import ButterflyGame from "./scenes/ButterflyGame";
 import FinalWish from "./scenes/FinalWish";
@@ -25,7 +24,6 @@ const SCENES = [
   "welcome",
   "surpriseOpening",
   "memoryGallery",
-  "siblingQuiz",
   "aboutHerQuiz",
   "butterflyGame",
   "finalWish",
@@ -59,7 +57,6 @@ export default function App() {
         )}
         {current === "surpriseOpening" && <SurpriseOpening key="surpriseOpening" onNext={goNext} />}
         {current === "memoryGallery" && <MemoryGallery key="memoryGallery" onNext={goNext} />}
-        {current === "siblingQuiz" && <SiblingQuiz key="siblingQuiz" onComplete={goNext} />}
         {current === "aboutHerQuiz" && <AboutHerQuiz key="aboutHerQuiz" onComplete={goNext} />}
         {current === "butterflyGame" && <ButterflyGame key="butterflyGame" onNext={goNext} />}
         {current === "finalWish" && <FinalWish key="finalWish" onNext={goNext} />}
