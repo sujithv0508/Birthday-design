@@ -6,6 +6,7 @@ import FloatingHearts from "../components/FloatingHearts";
 import GiftRevealBox from "../components/GiftRevealBox";
 import GiftOpeningAnimation from "../components/GiftOpeningAnimation";
 import GiftFinaleMessage from "../components/GiftFinaleMessage";
+import AllGiftsRevealed from "../components/AllGiftsRevealed";
 import GiftProgress from "../components/GiftProgress";
 import { gifts } from "../data/birthdayData";
 
@@ -14,7 +15,7 @@ const TRANSIT_MESSAGES = ["Your next surprise is ready... 👀", "One last surpr
 export default function GiftRevealScene({ onNext }) {
   const [openedCount, setOpenedCount] = useState(0);
   const [openingIndex, setOpeningIndex] = useState(null);
-  const [phase, setPhase] = useState("gifts"); // "gifts" | "final"
+  const [phase, setPhase] = useState("gifts"); // "gifts" | "revealed" | "final"
 
   function openGift(i) {
     if (i !== openedCount) return; // locked or already opened
@@ -26,7 +27,7 @@ export default function GiftRevealScene({ onNext }) {
     setOpeningIndex(null);
     setOpenedCount((c) => Math.max(c, justOpened + 1));
     if (justOpened === gifts.length - 1) {
-      setPhase("final");
+      setPhase("revealed");
     }
   }
 
@@ -92,6 +93,8 @@ export default function GiftRevealScene({ onNext }) {
               )}
             </AnimatePresence>
           </>
+        ) : phase === "revealed" ? (
+          <AllGiftsRevealed gifts={gifts} onContinue={() => setPhase("final")} />
         ) : (
           <GiftFinaleMessage onNext={onNext} />
         )}

@@ -3,8 +3,8 @@
 An interactive, cinematic birthday surprise built with React, Vite, Tailwind CSS,
 and Framer Motion. It's a single-page story the birthday person unlocks with a
 secret code and then clicks/taps through — questions, a photo gallery, a real
-playable mini-game, secret messages, three gifts to unwrap, and an emotional
-final reveal — designed mobile-first so it can be sent as a link over WhatsApp.
+playable mini-game, three gifts to unwrap, and an emotional final reveal —
+designed mobile-first so it can be sent as a link over WhatsApp.
 
 ## 1. Install
 
@@ -71,8 +71,7 @@ export const gifts = [
 
 Like the memory photos, these are cropped with `object-fit: cover` inside a
 square polaroid frame — any aspect ratio works. The gifts must be opened in
-order (gift 2 stays locked until gift 1 is opened, and so on), and **Replay
-the Journey** resets all three back to locked/unopened.
+order (gift 2 stays locked until gift 1 is opened, and so on).
 
 ## 5. Add real music
 
@@ -110,41 +109,48 @@ export const birthdayData = {
 ```
 
 Change these and the names update everywhere they're used (the lock screen
-hint, the opening, the "All About Suji Na" quiz, the final message, the
-secret messages, etc.) — nothing else needs to be touched. The lock screen's
+hint, the opening, the "All About Suji Na" quiz, the butterfly messages, the
+final message, etc.) — nothing else needs to be touched. The lock screen's
 hint only ever shows `${creatorName}'s birthday ❤️`, never the code itself.
 
 ## 7. Customize the quizzes
 
 Two separate quizzes live in `src/data/birthdayData.js`:
 
-- **`siblingQuiz`** — six just-for-fun questions with no "correct" answer.
-  Each option has its own `reactions` line shown after she picks it. Edit,
-  add, or remove questions/options/reactions freely.
+- **`siblingQuiz`** — "A Little Heart-to-Heart" (`scenes/SiblingQuiz.jsx`), 3
+  questions with no "correct" answer. Each option has its own `reactions`
+  line shown after she picks it. Edit, add, or remove questions/options/
+  reactions freely — the "Chapter X of N" indicator and progress bar are
+  computed from the array length, so they never need manual updates.
 - **`sujiNaQuiz`** — the "All About Suji Na" quiz (`scenes/AboutHerQuiz.jsx`).
-  Also no right/wrong answers — she picks whichever option fits, and the
-  result screen recaps what she chose. Edit the `question`/`options` freely;
-  it's a plain array of 3 questions, each with 4 options.
+  Also no right/wrong answers — she picks whichever option fits, then goes
+  straight to a "Continue the Surprise" button (no score, no recap screen).
+  It's a plain array of 3 questions, each with 4 options.
 
-## 8. Customize the secret messages
+## 8. Customize the butterfly messages
 
-`getSecretMessages(data)` in the same file returns the six envelopes. Each
-has an `id` (1–6, shown on the envelope), a `color` (a Tailwind gradient
-pair), a `title`, and a `body`. Edit the text freely — order doesn't matter,
-`id` just needs to stay unique.
+`butterflyMessages` in the same file feeds the butterfly-catching game
+(`scenes/ButterflyGame.jsx`). It's an array of exactly 6 entries — one per
+butterfly — each with a `color` (label only), `hex` (the butterfly's actual
+color), and `message` (the secret message revealed when that butterfly is
+caught). Edit the six messages freely; catching order doesn't matter since
+she can tap them in any sequence.
 
 ## 9. Customize the birthday wishes
 
 The final cinematic lines live directly inside the scene components, since
 they're one-off narrative copy rather than repeatable data:
 
-- `src/scenes/FinalSurprise.jsx` — the four-line build-up ("Through all the
-  ups and downs...")
 - `src/scenes/FinalWish.jsx` — the big "Happy Birthday" reveal and closing
   lines
 - `src/scenes/GiftRevealScene.jsx` — the "Three Little Gifts" title/subtitle
   and the four-line closing message after the third gift
-- `src/scenes/Celebration.jsx` — the final celebration screen
+- `src/scenes/FinalDeal.jsx` — the true final screen: "One Last Question,
+  Keerthi...", the sister-language border (edit the `WORDS` array in
+  `src/components/SisterLanguageBorder.jsx` to change the languages shown),
+  and the closing "Deal Accepted!" message. This is the last scene in the
+  journey — its only button is "Return to Journey", which steps back one
+  chapter rather than restarting.
 
 They all import `birthdayData` for the name/message, so search for the plain
 text you want to change in those files.
@@ -203,14 +209,10 @@ open as an overlay and close back to where she was:
 | Memory Detail | `scenes/MemoryDetail.jsx` — opened from the gallery, closes back to it |
 | Sibling Quiz | `scenes/SiblingQuiz.jsx` |
 | About-Her Quiz ("All About Suji Na") | `scenes/AboutHerQuiz.jsx` |
-| Heart Game | `scenes/HeartGame.jsx` |
-| Game Result | `scenes/GameResult.jsx` |
-| Secret Messages | `scenes/SecretMessages.jsx` |
-| Message Opened | `scenes/MessageOpened.jsx` — opened from an envelope, closes back to the grid |
-| Final Surprise | `scenes/FinalSurprise.jsx` |
+| Butterfly Game | `scenes/ButterflyGame.jsx` — catch all six butterflies, each revealing a secret message, ending in a birthday card |
 | Final Wish | `scenes/FinalWish.jsx` |
 | Three Little Gifts | `scenes/GiftRevealScene.jsx` — three gifts, opened in order, each revealing a photo |
-| Celebration | `scenes/Celebration.jsx` |
+| Final Deal | `scenes/FinalDeal.jsx` — the last screen in the journey; its only button, "Return to Journey", steps back one chapter instead of continuing forward |
 
 ## Project structure
 
@@ -225,7 +227,6 @@ src/
 ├── data/
 │   └── birthdayData.js   ← all personalization lives here
 ├── hooks/
-│   ├── useCountUp.js
 │   └── usePointerParallax.js
 ├── App.jsx            owns navigation state and wires scenes together
 ├── main.jsx
@@ -244,24 +245,24 @@ public/
 - Full scene journey (see table above), navigated entirely by button/tap (no
   page scroll between chapters), with cinematic Framer Motion transitions
   (fade/scale/slide/blur/spring/cinematic per scene).
-- A real playable 10-second mini-game (drag/touch on mobile, mouse or arrow
-  keys on desktop, live score and timer, three item types with different
-  scoring, auto-ends and advances).
+- A butterfly-catching collection game — no score, no timer, tap any of the
+  six freely-flying butterflies in any order to send it into the glass jar
+  and reveal its own secret message, ending in a cinematic jar-to-heart
+  animation and a full birthday letter card.
 - Two quizzes: a no-wrong-answers sibling quiz, and the "All About Suji Na"
-  quiz — also no right/wrong answers, with a warm recap result screen instead
-  of a score.
-- Filterable polaroid photo gallery with a full-screen detail view
-  (prev/next/close).
-- Six interactive secret-message envelopes.
+  quiz — also no right/wrong answers, going straight from the last question
+  to a "Continue the Surprise" button with no score or recap screen.
+- Polaroid photo gallery (all 8 shown at once, no filtering) with a
+  full-screen detail view (prev/next/close).
 - Three gifts opened in strict order, each with its own cinematic
   shake → lid-opens → light-burst → polaroid-photo-rises sequence; the third
   gift gets a darker, more intense version of the same sequence.
-- Reusable particle system (hearts/stars/magical dust), a DOM-based confetti
-  system triggered from several moments, and an interactive cake with candles
-  you blow out.
+- Reusable particle system (hearts/stars/magical dust) and a DOM-based
+  confetti system triggered from several moments.
 - Persistent floating music control that survives every scene transition.
-- A configurable progress indicator, hidden on the lock/welcome/celebration
-  bookends.
+- A configurable progress indicator plus a global "← Previous" button
+  (`components/PreviousButton.jsx`), both hidden on the lock/welcome intro
+  and on the final card.
 - `prefers-reduced-motion` support (ambient particle/animation counts drop,
   transitions shorten) and full keyboard/tap accessibility on every control.
 - Mobile-first responsive layout, verified at 375×667, 390×844, 430×932, and
@@ -272,8 +273,10 @@ public/
 - The placeholder photos (both `public/photos/` and `public/gifts/`) are
   colored SVGs, not real images — see steps 3 and 4.
 - There's no bundled music file — see step 5.
-- Backward navigation between chapters is intentionally not implemented (the
-  story is meant to build one direction, aside from the quiz's own
-  Previous/Next), but **Replay the Journey** on the last screen resets
-  everything — including all three gifts back to locked — and starts over
-  from the welcome screen (she won't have to re-enter the secret code).
+- A global "← Previous" button (`components/PreviousButton.jsx`) lets her step
+  back one chapter at a time anywhere in the middle of the journey, without
+  losing quiz/game/gift progress. It's hidden on the lock/welcome intro (so
+  she's never sent back to the password screen) and on the final chapter.
+- The last chapter, Final Deal, is a one-way ending by design — its only
+  button is **Return to Journey**, which steps back one chapter (to Three
+  Little Gifts) rather than restarting the whole experience.

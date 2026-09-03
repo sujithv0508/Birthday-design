@@ -9,6 +9,7 @@ import { siblingQuiz } from "../data/birthdayData";
 export default function SiblingQuiz({ onComplete }) {
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState(null);
+  const [sparkleKey, setSparkleKey] = useState(0);
 
   const question = siblingQuiz[index];
   const isLast = index === siblingQuiz.length - 1;
@@ -16,6 +17,7 @@ export default function SiblingQuiz({ onComplete }) {
   function choose(i) {
     if (selected !== null) return;
     setSelected(i);
+    setSparkleKey((k) => k + 1);
   }
 
   function next() {
@@ -30,11 +32,24 @@ export default function SiblingQuiz({ onComplete }) {
   return (
     <SceneContainer variant="slideUp" bgClassName="bg-gradient-to-b from-lavender via-[#b79be0] to-orchid">
       <div className="relative z-10 w-full max-w-md">
-        <p className="text-center text-xs font-semibold uppercase tracking-widest text-white/80">
+        <div className="flex flex-col items-center gap-1.5">
+          <span className="text-xs font-medium text-white/70">
+            Chapter {index + 1} of {siblingQuiz.length}
+          </span>
+          <div className="h-[3px] w-20 overflow-hidden rounded-full bg-white/15">
+            <motion.div
+              className="h-full rounded-full bg-gradient-to-r from-gold to-cream"
+              animate={{ width: `${((index + 1) / siblingQuiz.length) * 100}%` }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            />
+          </div>
+        </div>
+
+        <p className="mt-3 text-center text-xs font-semibold uppercase tracking-widest text-white/80">
           Question {index + 1} of {siblingQuiz.length}
         </p>
-        <h2 className="mt-2 text-center font-script text-4xl text-white">How Well Do You Know Me? 😜</h2>
-        <p className="mt-2 text-center text-sm text-white/75">Think carefully... or don&apos;t 😂</p>
+        <h2 className="mt-2 text-center font-script text-4xl text-white">A Little Heart-to-Heart ❤️</h2>
+        <p className="mt-2 text-center text-sm text-white/75">Just answer honestly... 🥹</p>
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -55,6 +70,7 @@ export default function SiblingQuiz({ onComplete }) {
                   state={selected === i ? "selected" : "idle"}
                   disabled={selected !== null}
                   onClick={() => choose(i)}
+                  sparkleKey={sparkleKey}
                 />
               ))}
             </div>
@@ -63,7 +79,7 @@ export default function SiblingQuiz({ onComplete }) {
               <motion.p
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-4 text-center font-script text-xl text-gold"
+                className="mt-4 text-center text-sm leading-relaxed text-gold sm:text-base"
               >
                 {question.reactions[selected]}
               </motion.p>

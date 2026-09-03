@@ -1,14 +1,17 @@
 import { motion } from "framer-motion";
 import { Check, X } from "lucide-react";
+import SparkleEffect from "./SparkleEffect";
 
 const LETTERS = ["A", "B", "C", "D"];
 
 /**
  * state: "idle" | "selected" | "correct" | "incorrect"
+ * `sparkleKey`: bump this (from the parent's click handler) to fire a
+ * sparkle burst — only rendered while state is "selected".
  */
-export default function QuizOption({ label, index, state = "idle", onClick, disabled }) {
+export default function QuizOption({ label, index, state = "idle", onClick, disabled, sparkleKey = 0 }) {
   const base =
-    "w-full rounded-2xl border px-4 py-3.5 text-left text-sm sm:text-base font-medium flex items-center gap-3 transition-colors";
+    "relative w-full rounded-2xl border px-4 py-3.5 text-left text-sm sm:text-base font-medium flex items-center gap-3 transition-colors";
 
   const styles = {
     idle: "border-white/20 bg-white/10 text-cream",
@@ -34,6 +37,7 @@ export default function QuizOption({ label, index, state = "idle", onClick, disa
       <span className="flex-1">{label}</span>
       {state === "correct" && <Check size={18} className="shrink-0 text-emerald-200" />}
       {state === "incorrect" && <X size={18} className="shrink-0 text-rose-200" />}
+      {state === "selected" && <SparkleEffect triggerKey={sparkleKey} count={5} />}
     </motion.button>
   );
 }

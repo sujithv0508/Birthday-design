@@ -78,6 +78,10 @@
   0%, 100% { transform: rotate(-3deg); }
   50% { transform: rotate(3deg); }
 }
+@keyframes border-glow {
+  0%, 100% { text-shadow: none; opacity: 0.8; }
+  50% { text-shadow: 0 0 12px rgba(246,198,103,0.9); opacity: 1; }
+}
 @keyframes shake {
   0%, 100% { transform: translateX(0) rotate(0); }
   20% { transform: translateX(-6px) rotate(-2deg); }
@@ -114,7 +118,8 @@ body {
 }
 
 #root {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
 }
 
