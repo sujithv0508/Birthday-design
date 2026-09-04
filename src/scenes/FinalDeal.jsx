@@ -8,6 +8,7 @@ import Sparkles from "../components/Sparkles";
 import MagicalParticles from "../components/MagicalParticles";
 import ButterflyIcon from "../components/ButterflyIcon";
 import SisterLanguageBorder from "../components/SisterLanguageBorder";
+import LastCardMusicExperience from "../components/LastCardMusicExperience";
 import { useConfetti } from "../components/Confetti";
 
 const BUTTERFLY_HEXES = ["#f5a3c7", "#a557c9", "#6db8f2", "#f6c667"];
@@ -50,12 +51,18 @@ const RIGHT_ICONS = [
  * moment. `onBack` powers "Return to Journey", the only navigation
  * left here — it steps back one chapter rather than restarting.
  */
-export default function FinalDeal({ onBack }) {
+export default function FinalDeal({ onBack, onLastCardMusicStart, onLastCardMusicStop }) {
   const [phase, setPhase] = useState("asking"); // "asking" | "celebrating" | "final"
   const [showNiceTry, setShowNiceTry] = useState(false);
   const { fire } = useConfetti();
   const timersRef = useRef([]);
+  const musicExpRef = useRef(null);
   const reduceMotion = useReducedMotion();
+
+  function handleReturnToJourney() {
+    musicExpRef.current?.stop();
+    onBack();
+  }
 
   useEffect(() => () => timersRef.current.forEach(clearTimeout), []);
 
@@ -75,6 +82,8 @@ export default function FinalDeal({ onBack }) {
 
   return (
     <SceneContainer variant="cinematic" bgClassName="bg-transparent" className="!p-0">
+      <LastCardMusicExperience ref={musicExpRef} onMusicStart={onLastCardMusicStart} onMusicStop={onLastCardMusicStop} />
+
       <div
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
@@ -331,7 +340,7 @@ export default function FinalDeal({ onBack }) {
             >
               <motion.button
                 type="button"
-                onClick={onBack}
+                onClick={handleReturnToJourney}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.94 }}
                 className="flex items-center gap-2 rounded-full border border-gold/40 bg-white/10 px-6 py-3 text-sm font-semibold text-cream shadow-[0_10px_30px_rgba(246,198,103,0.25)] backdrop-blur-md sm:px-7 sm:py-3.5 sm:text-base"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SceneContainer from "../components/SceneContainer";
 import FloatingStars from "../components/FloatingStars";
@@ -8,14 +8,64 @@ import GiftOpeningAnimation from "../components/GiftOpeningAnimation";
 import GiftFinaleMessage from "../components/GiftFinaleMessage";
 import AllGiftsRevealed from "../components/AllGiftsRevealed";
 import GiftProgress from "../components/GiftProgress";
+import ButterflyMusicButton from "../components/ButterflyMusicButton";
 import { gifts } from "../data/birthdayData";
 
 const TRANSIT_MESSAGES = ["Your next surprise is ready... 👀", "One last surprise... 👀❤️"];
 
-export default function GiftRevealScene({ onNext }) {
+export default function GiftRevealScene({ onNext, onGiftMusicStart, onGiftMusicStop }) {
   const [openedCount, setOpenedCount] = useState(0);
   const [openingIndex, setOpeningIndex] = useState(null);
   const [phase, setPhase] = useState("gifts"); // "gifts" | "revealed" | "final"
+  const audioRef = useRef(null);
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const [gift3Revealed, setGift3Revealed] = useState(false);
+
+  // gift.mp3 belongs only to the moment the third/final gift is revealed
+  // onward — never on chapter open, never for gifts 1-2. Mounted once
+  // for the scene's lifetime; leaving the chapter (forward or via the
+  // global Previous button) always stops it via the cleanup below.
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const onPlay = () => setMusicPlaying(true);
+    const onPause = () => setMusicPlaying(false);
+    audio.addEventListener("play", onPlay);
+    audio.addEventListener("pause", onPause);
+    return () => {
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onPause);
+      audio.pause();
+      onGiftMusicStop?.();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function handleGift3Revealed() {
+    if (gift3Revealed) return;
+    setGift3Revealed(true);
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.loop = true;
+    audio.volume = 0.35;
+    onGiftMusicStart?.();
+    audio.play().catch(() => {
+      // Autoplay blocked — the floating button lets her start it herself.
+    });
+  }
+
+  function toggleGiftMusic() {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.paused) audio.play().catch(() => {});
+    else audio.pause();
+  }
+
+  function handleLeaveChapter() {
+    audioRef.current?.pause();
+    onGiftMusicStop?.();
+    onNext();
+  }
 
   function openGift(i) {
     if (i !== openedCount) return; // locked or already opened
@@ -33,6 +83,13 @@ export default function GiftRevealScene({ onNext }) {
 
   return (
     <SceneContainer variant="cinematic" bgClassName="bg-transparent" className="!p-0">
+      <audio ref={audioRef} src="/music/gift.mp3" preload="auto" />
+      {gift3Revealed && (
+        <div className="fixed bottom-5 right-5 z-[70]">
+          <ButterflyMusicButton isPlaying={musicPlaying} onToggle={toggleGiftMusic} />
+        </div>
+      )}
+
       <div
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
@@ -96,7 +153,7 @@ export default function GiftRevealScene({ onNext }) {
         ) : phase === "revealed" ? (
           <AllGiftsRevealed gifts={gifts} onContinue={() => setPhase("final")} />
         ) : (
-          <GiftFinaleMessage onNext={onNext} />
+          <GiftFinaleMessage onNext={handleLeaveChapter} />
         )}
       </div>
 
@@ -105,6 +162,7 @@ export default function GiftRevealScene({ onNext }) {
           gift={gifts[openingIndex]}
           isFinal={openingIndex === gifts.length - 1}
           onContinue={handleContinueFromGift}
+          onReveal={openingIndex === gifts.length - 1 ? handleGift3Revealed : undefined}
         />
       )}
     </SceneContainer>

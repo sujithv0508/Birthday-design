@@ -21,7 +21,7 @@ const THEME_LID = {
  * GiftPhotoReveal for the photo + message + Continue button.
  * `isFinal` (gift 3) gets a darker backdrop and a bigger burst.
  */
-export default function GiftOpeningAnimation({ gift, isFinal, onContinue }) {
+export default function GiftOpeningAnimation({ gift, isFinal, onContinue, onReveal }) {
   const [step, setStep] = useState(0); // 0 anticipation, 1 lid opens, 2 light burst, 3 photo
   const { fire } = useConfetti();
   const size = 160;
@@ -38,7 +38,10 @@ export default function GiftOpeningAnimation({ gift, isFinal, onContinue }) {
         setStep(2);
         fire({ count: isFinal ? 90 : 55, y: window.innerHeight * 0.4 });
       }, lightDelay),
-      setTimeout(() => setStep(3), photoDelay),
+      setTimeout(() => {
+        setStep(3);
+        onReveal?.();
+      }, photoDelay),
     ];
     return () => timers.forEach(clearTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
