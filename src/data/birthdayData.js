@@ -249,7 +249,8 @@ export const butterflyMessages = [
   {
     color: "pink",
     hex: "#f5a3c7",
-    message: "Keerthi, no matter how much we grow up, you will always be my Thangachi. ❤️",
+    message:
+      "Last September, we both booked iPhones. That night, during our call, you said, “Anna, I don’t want an iPhone. Samsung is enough for me, Anna. Please, Anna, order a Samsung.” 😂❤️\n\nI knew you would be sad if I ordered a Samsung, so I changed my mind. I spoke with both your parents, convinced them, arranged the cash that same night, and booked both phones. 📱❤️\n\nIf I had ordered a Samsung, you wouldn’t have been happy. Now you’re happy, right? 😂❤️\n\nI know you’ll forget this day someday!",
   },
   {
     color: "purple",
@@ -260,13 +261,14 @@ export const butterflyMessages = [
   {
     color: "blue",
     hex: "#6db8f2",
-    message: "I may not have been there from your childhood, but I'm really happy that life gave me a chance to become your Anna. ❤️",
+    message:
+      "I have a few habits of yours that I don’t like. 😂❤️\n\n1st: You forget everything I tell you. 😂\n\n2nd: You reply late and sometimes avoid my calls. 😭\n\n3rd: You never send me reels or call me first. I’m always the one who calls first and sends reels. 😂❤️",
   },
   {
     color: "gold",
     hex: "#f6c667",
     message:
-      "From now on, let's create more photos, more outings, more fights, more laughs and many more memories together. 📸😂❤️",
+      "Seriously, do you like me? ❤️\n\nOr am I just disturbing you all the time? 😂\n\nIf I ever have a problem in my life, will you support me and stand by me? 🥹❤️\n\nI want you to be like this with me until the end of my life. ❤️🫶",
   },
   {
     color: "orange",
