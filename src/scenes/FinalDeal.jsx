@@ -8,7 +8,6 @@ import Sparkles from "../components/Sparkles";
 import MagicalParticles from "../components/MagicalParticles";
 import ButterflyIcon from "../components/ButterflyIcon";
 import SisterLanguageBorder from "../components/SisterLanguageBorder";
-import LastCardMusicExperience from "../components/LastCardMusicExperience";
 import { useConfetti } from "../components/Confetti";
 
 const BUTTERFLY_HEXES = ["#f5a3c7", "#a557c9", "#6db8f2", "#f6c667"];
@@ -51,16 +50,14 @@ const RIGHT_ICONS = [
  * moment. `onBack` powers "Return to Journey", the only navigation
  * left here — it steps back one chapter rather than restarting.
  */
-export default function FinalDeal({ onBack, onLastCardMusicStart, onLastCardMusicStop }) {
+export default function FinalDeal({ onBack }) {
   const [phase, setPhase] = useState("asking"); // "asking" | "celebrating" | "final"
   const [showNiceTry, setShowNiceTry] = useState(false);
   const { fire } = useConfetti();
   const timersRef = useRef([]);
-  const musicExpRef = useRef(null);
   const reduceMotion = useReducedMotion();
 
   function handleReturnToJourney() {
-    musicExpRef.current?.stop();
     onBack();
   }
 
@@ -82,8 +79,6 @@ export default function FinalDeal({ onBack, onLastCardMusicStart, onLastCardMusi
 
   return (
     <SceneContainer variant="cinematic" bgClassName="bg-transparent" className="!p-0">
-      <LastCardMusicExperience ref={musicExpRef} onMusicStart={onLastCardMusicStart} onMusicStop={onLastCardMusicStop} />
-
       <div
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"

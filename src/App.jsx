@@ -50,14 +50,9 @@ export default function App() {
   // aside once gift.mp3 is actually the one playing.
   const [giftMusicActive, setGiftMusicActive] = useState(false);
 
-  // Same idea for the final card's optional "one last song" — only
-  // engages once she actually presses Play, not just for being on the
-  // final card (she might decline it entirely with "Not Now").
-  const [lastCardMusicActive, setLastCardMusicActive] = useState(false);
-
   return (
     <ConfettiProvider>
-      <MusicController ref={musicRef} hidden={giftMusicActive || lastCardMusicActive} />
+      <MusicController ref={musicRef} hidden={giftMusicActive} />
       {showChrome && <ProgressIndicator current={index + 1} total={SCENES.length} />}
       {showChrome && <PreviousButton onClick={goBack} />}
 
@@ -85,20 +80,7 @@ export default function App() {
             }}
           />
         )}
-        {current === "finalDeal" && (
-          <FinalDeal
-            key="finalDeal"
-            onBack={goBack}
-            onLastCardMusicStart={() => {
-              musicRef.current?.pauseForOverride();
-              setLastCardMusicActive(true);
-            }}
-            onLastCardMusicStop={() => {
-              musicRef.current?.resumeAfterOverride();
-              setLastCardMusicActive(false);
-            }}
-          />
-        )}
+        {current === "finalDeal" && <FinalDeal key="finalDeal" onBack={goBack} />}
       </AnimatePresence>
     </ConfettiProvider>
   );
