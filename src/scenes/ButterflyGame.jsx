@@ -8,7 +8,6 @@ import SecretMessageCard from "../components/SecretMessageCard";
 import MagicalParticles from "../components/MagicalParticles";
 import ButterflyIcon from "../components/ButterflyIcon";
 import FinalButterflyCard from "../components/FinalButterflyCard";
-import ButterflyMusicButton from "../components/ButterflyMusicButton";
 import { useConfetti } from "../components/Confetti";
 import { butterflyMessages } from "../data/birthdayData";
 
@@ -29,44 +28,10 @@ export default function ButterflyGame({ onNext }) {
   const [completionStep, setCompletionStep] = useState(0);
   const { fire } = useConfetti();
   const timersRef = useRef([]);
-  const audioRef = useRef(null);
-  const [musicPlaying, setMusicPlaying] = useState(false);
 
   useEffect(() => () => timersRef.current.forEach(clearTimeout), []);
 
-  // This chapter's own background track — mounted/unmounted exactly
-  // alongside the chapter itself, so leaving (or coming back via the
-  // global Previous button, which remounts this scene) naturally stops
-  // or restarts it without any extra lifecycle wiring.
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.loop = true;
-    audio.volume = 0.35;
-    audio.play().catch(() => {
-      // Autoplay blocked — she can start it with the floating button instead.
-    });
-
-    const onPlay = () => setMusicPlaying(true);
-    const onPause = () => setMusicPlaying(false);
-    audio.addEventListener("play", onPlay);
-    audio.addEventListener("pause", onPause);
-    return () => {
-      audio.removeEventListener("play", onPlay);
-      audio.removeEventListener("pause", onPause);
-      audio.pause();
-    };
-  }, []);
-
-  function toggleMusic() {
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (audio.paused) audio.play().catch(() => {});
-    else audio.pause();
-  }
-
   function handleContinue() {
-    audioRef.current?.pause();
     onNext();
   }
 
@@ -105,8 +70,6 @@ export default function ButterflyGame({ onNext }) {
 
   return (
     <SceneContainer variant="fade" bgClassName="bg-transparent" className="!p-0">
-      <audio ref={audioRef} src="/music/butterfly.mp3" preload="auto" />
-
       <div
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
@@ -156,10 +119,6 @@ export default function ButterflyGame({ onNext }) {
                 <GlassJar collected={collected} lidOpen={completionStep >= 1} glowBoost={phase === "completing" ? 0.35 : 0} />
               </div>
             </motion.div>
-
-            <div className="mt-3 flex justify-center">
-              <ButterflyMusicButton isPlaying={musicPlaying} onToggle={toggleMusic} />
-            </div>
 
             <p className="mt-3 text-center text-xs text-cream/60">Tap a butterfly to catch it ✨</p>
           </>

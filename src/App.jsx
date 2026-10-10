@@ -44,15 +44,6 @@ export default function App() {
   // card, which has its own "Return to Journey" button instead.
   const showChrome = index > 1 && index < SCENES.length - 1;
 
-  // The butterfly chapter has its own background track and floating
-  // control, so the global player steps aside (and pauses) while it's
-  // active rather than risking two songs playing at once.
-  const inButterflyChapter = current === "butterflyGame";
-  useEffect(() => {
-    if (inButterflyChapter) musicRef.current?.pauseForOverride();
-    else musicRef.current?.resumeAfterOverride();
-  }, [inButterflyChapter]);
-
   // The gift chapter's own track only takes over once the third gift is
   // revealed (GiftRevealScene decides exactly when via these callbacks),
   // so the global button stays put through gifts 1-2 and only steps
@@ -66,7 +57,7 @@ export default function App() {
 
   return (
     <ConfettiProvider>
-      <MusicController ref={musicRef} hidden={inButterflyChapter || giftMusicActive || lastCardMusicActive} />
+      <MusicController ref={musicRef} hidden={giftMusicActive || lastCardMusicActive} />
       {showChrome && <ProgressIndicator current={index + 1} total={SCENES.length} />}
       {showChrome && <PreviousButton onClick={goBack} />}
 
